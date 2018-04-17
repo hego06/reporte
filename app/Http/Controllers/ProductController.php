@@ -6,7 +6,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade as PDF;
-
+use Barryvdh\DomPDF\Facade as PDF;
 class ProductController extends Controller
 {
     public function index()
