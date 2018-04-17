@@ -1,35 +1,46 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Product;
+
 use Illuminate\Http\Request;
+use App\Traits\GeneradorReporte;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade as PDF;
-use Barryvdh\DomPDF\Facade as PDF;
+
 class ProductController extends Controller
 {
+    use GeneradorReporte;
+    
     public function index()
     {
-        $products = Product::all();
+        $this->generarReporte();
+        // $products = Product::all();
 
-        return view('products',compact('products'));
+        // return view('products',compact('products'));
     }
 
     public function pdf()
     {        
         $products = Product::all(); 
-        $pdf = PDF::loadView('pdf.products', compact('products'));
-        $pdf->save('listado.pdf');
 
-        return  redirect()->back()->with('menssage','Reporte creado');
+        $msg = $this->crearReporte('pdf.products',compact('products'), 'listado.pdf');
+
+        return redirect()->back()->with('message',$msg);
     }
 
     public function one(Product $product)
     {
-        $pdf = PDF::loadView('pdf.product', compact('product'));
-        $pdf->save('rep-prod'.$product->id.'.pdf');
+        $name= 'rep-prod'.$product->id.'.pdf';
+        $msg = $this->crearReporte('pdf.product',compact('product'), $name);
 
-        return  redirect()->back()->with('menssage','Reporte creado');
+        return redirect()->back()->with('message', $msg);
+    }
+
+    protected function crearReporte($view, $data, $name){
+        $pdf = PDF::loadView($view,$data);
+        $pdf->save($name);
+
+        return "Reporte creado";
     }
 }
