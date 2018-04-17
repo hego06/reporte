@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade as PDF;
 
 class ProductController extends Controller
@@ -18,18 +19,17 @@ class ProductController extends Controller
     public function pdf()
     {        
         $products = Product::all(); 
-
         $pdf = PDF::loadView('pdf.products', compact('products'));
+        $pdf->save('listado.pdf');
 
-        return $pdf->download('listado.pdf');
+        return  redirect()->back()->with('menssage','Reporte creado');
     }
 
-    public function one($id)
-    {        
-        $product = Product::find($id); 
-
+    public function one(Product $product)
+    {
         $pdf = PDF::loadView('pdf.product', compact('product'));
+        $pdf->save('rep-prod'.$product->id.'.pdf');
 
-        return $pdf->download('producto.pdf');
+        return  redirect()->back()->with('menssage','Reporte creado');
     }
 }

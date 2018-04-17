@@ -17,4 +17,4 @@ Route::get('/', function () {
 
 Route::get('/', 'ProductController@index')->name('products');
 Route::get('descargar-productos', 'ProductController@pdf')->name('products.pdf');
-Route::get('descargar-individual/{$id}', 'ProductController@one')->name('product.pdf');
+Route::get('descargar-individual/{product}', 'ProductController@one')->name('product.pdf');
