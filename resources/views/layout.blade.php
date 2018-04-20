@@ -7,6 +7,12 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+        #scroll{
+            overflow: scroll;
+            height: 400px;
+        }
+    </style>
     </head>
     <body>
         <div class="container">
@@ -17,6 +23,8 @@
                             <strong>OK! </strong>{{ Session::get('message') }}
                         </div>
                     @endif
+                </div>
+                <div>
                     @yield('content')
                 </div>
             </div>

@@ -1,32 +1,41 @@
 @extends('layout')
 
 @section('content')
-    <h1 class="page-header">Listado de productos</h1>
+
+<table>
+    <a href="{{route('recibos.pdf')}}" class="btn btn-primary pull-right"> <i class="fa fa-plus"></i> Generar reportes</a>
+    <h1 class="page-header">Listado</h1>
+</table>
+
+
+</div>
+    <div id="scroll">
     <table class="table table-hover table-striped">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Producto</th>
-                <th>Descripción</th>
-                <th>Stock</th>
-                <th>Reporte</th>
+                <th>Folio</th>
+                <th>Nombre</th>
+                <th>Recibos</th>
             </tr>                            
         </thead>
         <tbody>
-            @foreach($products as $product)
+            @foreach($recibos as $recibo)
             <tr>
-                <td>{{ $product->id }}</td>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->description }}</td>
-                <td class="text-right">{{ $product->stock }}</td>
+                <td>{{ $recibo->folio }}</td>
+                <td>{{ $recibo->nombre }}</td>
                 <td>
-                    <a type="button" class="btn" href="{{ route('product.pdf',$product->id) }}"><i class="glyphicon glyphicon-file"></i></a>
-                    <a class="btn ver" type="button" data-toggle="modal" data-target="#myModal" data-name="{{'rep-prod'.$product->id.'.pdf'}}" class="btn"><i class="glyphicon glyphicon-eye-open"></i></a>
+                    @if(!empty($recibo->pdf))
+                        <a class="btn ver" type="button" data-toggle="modal" data-target="#myModal" data-name="{{$recibo->folio.'.pdf'}}" class="btn"><i class="glyphicon glyphicon-eye-open"></i></a>
+                    @else
+                        Reporte no genrado
+                    @endif
                 </td>      
             </tr>
             @endforeach
         </tbody>
     </table>
+</div>
+
 <!--Inicio modal-->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
