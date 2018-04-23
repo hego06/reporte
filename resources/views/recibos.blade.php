@@ -3,10 +3,16 @@
 @section('content')
 
 <table>
-    <a href="{{route('recibos.pdf')}}" class="btn btn-primary pull-right"> <i class="fa fa-plus"></i> Generar reportes</a>
-    <h1 class="page-header">Listado</h1>
+    <h1 class="page-header">Recibos</h1>
 </table>
-
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="{{route('recibos.pdf')}}" class="btn"> <i class="fa fa-plus"></i><strong>Generar reportes</strong></a></li>
+      <li><a href="{{route('download.recibos')}}" class="btn"> <i class="fa fa-plus"></i><strong>Descargar reportes</strong></a></li>
+    </ul>
+  </div>
+</nav>
 
 </div>
     <div id="scroll">

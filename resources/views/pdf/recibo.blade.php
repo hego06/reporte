@@ -16,7 +16,7 @@
         }
 
         .titulo2{
-            background-color: #dfe6e9;
+            /* background-color: #dfe6e9; */
             /* background-color: #b2bec3; */
         }
 
@@ -31,7 +31,7 @@
     </style>
     @if($recibo->cancelado==1)
         <style>
-            table.central{
+            body{
                 background-image: url('http://lax.megatravel.com.mx/img/cancelado.png'); 
                 background-repeat: no-repeat;
                 background-position: center;
@@ -140,7 +140,7 @@
     </tr>
     <!-- Inicia seccion del expediente -->
     <tr> 
-        <td colspan='4'>
+        <td colspan='4'  style='background: url(http://lax.megatravel.com.mx/expo/img/logo_mt.png) center no-repeat;'>
             <table width='100%' cellpadding='0' cellspacing='0' >
                 <tr class='general'>
                     <th>EXPEDIENTE</th>
