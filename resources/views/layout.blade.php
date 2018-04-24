@@ -17,13 +17,6 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-xs-12">
-                    @if (Session::has('message'))
-                        <div class="alert alert-success fade in alert-dismissible" style="margin-top:18px;">
-                            <strong>OK! </strong>{{ Session::get('message') }}
-                        </div>
-                    @endif
-                </div>
                 <div>
                     @yield('content')
                 </div>

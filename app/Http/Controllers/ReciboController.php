@@ -6,11 +6,12 @@ use App\Recibo;
 use Chumper\Zipper\Zipper;
 use Illuminate\Http\Request;
 use App\Traits\GeneradorReporte;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade as DPDF;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\File;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 
 class ReciboController extends Controller
@@ -30,11 +31,12 @@ class ReciboController extends Controller
     {        
         $recibos = Recibo::where('pdf','')->get();; 
         if ($recibos->isEmpty()) {
-            return redirect()->back()->with('message','No hay nuevos reportes por generar');
+            return redirect()->back()->with('no-recibo','No hay nuevos recibos por generar');
         }
+
         foreach($recibos as $recibo)
         {
-            $pdf = PDF::loadView('pdf.recibo',compact('recibo'));
+            $pdf = DPDF::loadView('pdf.recibo',compact('recibo'));
             $pdf->save('recibos/'.$recibo->folio.'.pdf');
 
             DB::table('recibodig')
@@ -51,10 +53,10 @@ class ReciboController extends Controller
     */
     public function descargar(){
         set_time_limit(500);
-        $recibos = Recibo::where('pdf','=','1')->get();
+        $recibos = Recibo::where('pdf','!=','')->get();
 
         if ($recibos->isEmpty()){
-            return redirect()->back()->with('message','No hay nuevos reportes por descargar');
+            return redirect()->back()->with('no-descarga','Aun no ha generado recibos o ya han sido descargados');
         }
 
         if(file_exists(public_path('recibos/recibos.zip'))){
@@ -78,9 +80,28 @@ class ReciboController extends Controller
     }
 
     protected function crearReporte($view, $data){
-        $pdf = PDF::loadView($view,$data);
+        $pdf = DPDF::loadView($view,$data);
         $pdf->save($data->folio);
 
-        return "Reporte creado";
+        return "Recibo creado";
+    }
+
+    public function imprimir(){
+        $recibos = Recibo::where('pdf','!=','')->get();
+        if ($recibos->isEmpty()){
+            return redirect()->back()->with('no-descarga','No hay archivos pendientes por imprimir');
+        }
+
+        $archivos = $recibos->pluck('folio')->all();
+
+        $oMerger = PDFMerger::init();
+        foreach($recibos as $recibo){
+            $oMerger->addPDF('recibos/'.$recibo->folio.'.pdf', 'all');
+        }
+        $oMerger->merge();
+        $oMerger->stream('recibos/general.pdf');
+
+        Recibo::query()->truncate();
+
     }
 }

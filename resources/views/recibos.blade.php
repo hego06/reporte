@@ -1,15 +1,45 @@
 @extends('layout')
 
 @section('content')
-
-<table>
-    <h1 class="page-header">Recibos</h1>
-</table>
+<div class="row">
+    <div class="col-xs-12">
+        @if (Session::has('message'))
+            <div class="alert alert-success fade in alert-dismissible" style="margin-top:18px;">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+        @if (Session::has('no-recibo'))
+            <div class="alert alert-info fade in alert-dismissible" style="margin-top:18px;">
+                {{ Session::get('no-recibo') }}
+            </div>
+        @endif
+        @if (Session::has('no-descarga'))
+            <div class="alert alert-warning fade in alert-dismissible" style="margin-top:18px;">
+                {{ Session::get('no-descarga') }}
+            </div>
+        @endif
+    </div>
+</div>
+<br>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">RECIBOS</a>
+    </div>
     <ul class="nav navbar-nav">
-      <li><a href="{{route('recibos.pdf')}}" class="btn"> <i class="fa fa-plus"></i><strong>Generar reportes</strong></a></li>
-      <li><a href="{{route('download.recibos')}}" class="btn"> <i class="fa fa-plus"></i><strong>Descargar reportes</strong></a></li>
+        <li>
+            <a href="{{route('recibos.pdf')}}" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-cog"></span>Generar recibos</a>
+        </li>
+        <li>
+            <a href="{{route('download.recibos')}}" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-save"></span>Descargar recibos</a>
+        <li>
+        <li>
+            <a class="btn ver btn-default btn-lg" href="{{route('imprimir.recibos')}}">
+            <span class="glyphicon glyphicon-print"></span> Imprimir recibos
+            </a>
+        </li>
     </ul>
   </div>
 </nav>
@@ -33,7 +63,8 @@
                     @if(!empty($recibo->pdf))
                         <a class="btn ver" type="button" data-toggle="modal" data-target="#myModal" data-name="{{$recibo->folio.'.pdf'}}" class="btn"><i class="glyphicon glyphicon-eye-open"></i></a>
                     @else
-                        Reporte no genrado
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        Recibo no generado
                     @endif
                 </td>      
             </tr>
