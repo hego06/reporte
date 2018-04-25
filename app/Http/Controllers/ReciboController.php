@@ -20,7 +20,7 @@ class ReciboController extends Controller
     public function index()
     {
         $recibos = Recibo::where('pdf','=','')->get();
-        
+
         return view('recibos',compact('recibos'));
     }
     
@@ -80,41 +80,23 @@ class ReciboController extends Controller
     }
 
     public function imprimir(){
-        $recibos = Recibo::where('pdf','=','1')->get();
+        $recibos = Recibo::where('pdf','!=','')->get();
         if ($recibos->isEmpty()){
-            return redirect()->back()->with('no-descarga','No hay archivos pendientes por imprimir');
+            return redirect()->back()->with('no-descarga','No hay recibos pendientes por imprimir');
         }
 
         $archivos = $recibos->pluck('folio')->all();
-        // $archivos= array();
-        // $directorio = opendir('recibos'); //ruta actual
-        // while($archivo = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
-        // {
-        //     if (!is_dir($archivo))//verificamos si es o no un directorio
-        //     {
-        //         array_push($archivos, $archivo);
-        //     }
-        // }
-        // if(empty($archivos))
-        // {
-        //     return redirect()->back();
-        // }
+
         $oMerger = PDFMerger::init();
         foreach($recibos as $recibo){
             $oMerger->addPDF('recibos/'.$recibo->folio.'.pdf', 'all');
-
-            DB::table('recibodig')
-            ->where('folio','=', $recibo->folio)
-            ->update(['pdf' => 2]);
         }
-        // foreach($archivos as $recibo){
-        //     $oMerger->addPDF('recibos/'.$recibo, 'all');
-        // }
+
         $oMerger->merge();
         $oMerger->stream('recibos/general.pdf');
 
-        // Recibo::query()->truncate();
-
+        Recibo::query()->truncate();
+        File::cleanDirectory('recibos');
         return redirect()->back();
     }
 }

@@ -35,6 +35,8 @@
             <a href="{{route('download.recibos')}}" class="btn btn-default btn-lg">
             <span class="glyphicon glyphicon-save"></span>Descargar recibos</a>
         <li>
+    </ul>
+    <ul class="nav navbar-nav pull-right">
         <li>
             <a class="btn ver btn-default btn-lg" href="{{route('imprimir.recibos')}}">
             <span class="glyphicon glyphicon-print"></span> Imprimir recibos
