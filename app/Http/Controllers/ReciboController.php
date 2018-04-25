@@ -56,7 +56,7 @@ class ReciboController extends Controller
         $recibos = Recibo::where('pdf','!=','')->get();
 
         if ($recibos->isEmpty()){
-            return redirect()->back()->with('no-descarga','Aun no ha generado recibos o ya han sido descargados');
+            return redirect()->back()->with('no-descarga','Aun no ha generado recibos');
         }
 
         if(file_exists(public_path('recibos/recibos.zip'))){
@@ -66,17 +66,10 @@ class ReciboController extends Controller
         $archivos = $recibos->pluck('folio')->all();
 
         $zipper = new Zipper;
-        $zipper->make(public_path('recibos/recibos.zip'))->folder('recibos')->add(public_path('recibos'),$archivos);
+        $zipper->make(public_path('recibos/recibos.zip'))->folder('recibos')->add(public_path('recibos'));
         $zipper->close();
-
-        foreach($archivos as $folio)
-        {
-            DB::table('recibodig')
-            ->where('folio','=', $folio)
-            ->update(['pdf' => 2]);
-        }
         
-        return  Response::download(public_path('recibos/recibos.zip'),'reportes.zip');
+        return  Response::download(public_path('recibos/recibos.zip'),'reportes.zip')->deleteFileAfterSend(true);
     }
 
     protected function crearReporte($view, $data){
@@ -87,21 +80,41 @@ class ReciboController extends Controller
     }
 
     public function imprimir(){
-        $recibos = Recibo::where('pdf','!=','')->get();
+        $recibos = Recibo::where('pdf','=','1')->get();
         if ($recibos->isEmpty()){
             return redirect()->back()->with('no-descarga','No hay archivos pendientes por imprimir');
         }
 
         $archivos = $recibos->pluck('folio')->all();
-
+        // $archivos= array();
+        // $directorio = opendir('recibos'); //ruta actual
+        // while($archivo = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
+        // {
+        //     if (!is_dir($archivo))//verificamos si es o no un directorio
+        //     {
+        //         array_push($archivos, $archivo);
+        //     }
+        // }
+        // if(empty($archivos))
+        // {
+        //     return redirect()->back();
+        // }
         $oMerger = PDFMerger::init();
         foreach($recibos as $recibo){
             $oMerger->addPDF('recibos/'.$recibo->folio.'.pdf', 'all');
+
+            DB::table('recibodig')
+            ->where('folio','=', $recibo->folio)
+            ->update(['pdf' => 2]);
         }
+        // foreach($archivos as $recibo){
+        //     $oMerger->addPDF('recibos/'.$recibo, 'all');
+        // }
         $oMerger->merge();
         $oMerger->stream('recibos/general.pdf');
 
-        Recibo::query()->truncate();
+        // Recibo::query()->truncate();
 
+        return redirect()->back();
     }
 }
