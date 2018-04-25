@@ -55,7 +55,7 @@
                 <table  width="100%">
                     <thead>
                     <tr>
-                        <th align="lefth">TIPO DE CAMBIO</th>
+                        <th align="center">TIPO DE CAMBIO</th>
                         <td class="t1" align="right"><u><b>{{$recibo->folio}}</b></u></td>
                     </tr>
                     </thead>

@@ -12,9 +12,20 @@
                 overflow: scroll;
                 height: 400px;
             }
+            .se-pre-con {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                display: none;
+                background: url('Preloader_3.gif') center no-repeat #fff;
+            }
         </style>
     </head>
     <body>
+        <div class="se-pre-con"></div>
         <div class="container">
             <div class="row">
                 <div>
@@ -27,6 +38,11 @@
         $('.ver').click(function() 
         {
             $('#contenido embed').attr('src', $(this).data('name'));
+        });
+
+        $('.imprimir').click(function() 
+        {
+            $('.se-pre-con').show();
         });
     </script>
 </html>

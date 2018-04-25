@@ -38,7 +38,7 @@
     </ul>
     <ul class="nav navbar-nav pull-right">
         <li>
-            <a class="btn ver btn-default btn-lg" href="{{route('imprimir.recibos')}}">
+            <a class="btn imprimir btn-default btn-lg" href="{{route('imprimir.recibos')}}">
             <span class="glyphicon glyphicon-print"></span> Imprimir recibos
             </a>
         </li>
@@ -60,7 +60,7 @@
             @foreach($recibos as $recibo)
             <tr>
                 <td>{{ $recibo->folio }}</td>
-                <td>{{ $recibo->nombre }}</td>
+                <td>{{ $recibo->nombre }} {{ $recibo->fechahoy}}</td>
                 <td>
                     @if(!empty($recibo->pdf))
                         <a class="btn ver" type="button" data-toggle="modal" data-target="#myModal" data-name="{{$recibo->folio.'.pdf'}}" class="btn"><i class="glyphicon glyphicon-eye-open"></i></a>

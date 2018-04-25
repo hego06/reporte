@@ -4,42 +4,29 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+setlocale(LC_TIME, 'Spanish');
 class Recibo extends Model
 {
     protected $table = 'recibodig';
-
+    
     function getFsalidaAttribute($fSalida)
     {
-        $mesCorto = array("ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC");
-        $date = strtotime($fSalida);
-        $fSalida = date('d',$date)."-".$mesCorto[date('n',$date)-1]. "-".date('Y',$date);
-        return $fSalida;
+        return Carbon::parse($fSalida)->formatLocalized('%d-%b-%Y');
     }
 
     function getFechahoyAttribute($fechaHoy)
     {
-        $mesCom = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
-        $date = strtotime($fechaHoy);
-        $fechaHoy = date('d',$date)." DE ".$mesCom[date('n',$date)-1]. " DEL ".date('Y',$date);
-        return $fechaHoy;
+        return Carbon::parse($fechaHoy)->formatLocalized('%d de %B del %Y');
     }
 
     function getFechatcAttribute($fechaTipoCambio)
     {
-        $mesCorto = array("ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC");
-        $date = strtotime($fechaTipoCambio);
-        $fechaTipoCambio = date('d',$date)."-".$mesCorto[date('n',$date)-1]. "-".date('y',$date);
-
-        return $fechaTipoCambio;
+        return Carbon::parse($fechaTipoCambio)->formatLocalized('%d-%b-%Y');
     }
 
     function getFechsaopAttribute($fechaOperacion)
     {
-        $mesCorto = array("ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC");
-        $date = strtotime($fechaOperacion);
-        $fechaOperacion = date('d',$date)."-".$mesCorto[date('n',$date)-1]. "-".date('Y',$date);
-
-        return $fechaOperacion;
+        return Carbon::parse($fechaOperacion)->formatLocalized('%d-%b-%Y');
     }
+
 }
