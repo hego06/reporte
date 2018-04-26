@@ -20,12 +20,20 @@
                 height: 100%;
                 z-index: 9999;
                 display: none;
-                background: url('Preloader_3.gif') center no-repeat #fff;
+                background: url('loader_4.gif') center no-repeat #fff;
             }
         </style>
+        {{--  <script>
+            $( document ).ready(function() {
+                $( ".imprimir" ).click(function() {
+                    $('.se-pre-con').show(); 
+                });
+            });
+        </script>  --}}
     </head>
     <body>
-        <div class="se-pre-con"></div>
+        <div class="se-pre-con">
+        </div>
         <div class="container">
             <div class="row">
                 <div>
@@ -43,6 +51,10 @@
         $('.imprimir').click(function() 
         {
             $('.se-pre-con').show();
+        });
+
+        $(".alert-dismissible").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert-dismissible").alert('close');
         });
     </script>
 </html>
