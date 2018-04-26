@@ -48,11 +48,11 @@ class ReciboController extends Controller
     }
 
     /* 
-        Descarga un archivo zip de los PDF, al finalizar actuliza
+        Descarga un archivo zip de los PDF, al finalizar actualiza
         el valor de pdf a 2 para indicar que ya se a descargado.
     */
     public function descargar(){
-        set_time_limit(500);
+        set_time_limit(720);
         $recibos = Recibo::where('pdf','!=','')->get();
 
         if ($recibos->isEmpty()){
@@ -88,8 +88,12 @@ class ReciboController extends Controller
         $archivos = $recibos->pluck('folio')->all();
 
         $oMerger = PDFMerger::init();
-        foreach($recibos as $recibo){
-            $oMerger->addPDF('recibos/'.$recibo->folio.'.pdf', 'all');
+        try {
+            foreach($recibos as $recibo){
+                $oMerger->addPDF('recibos/'.$recibo->folio.'.pdf', 'all');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('no-descarga',$e);
         }
 
         $oMerger->merge();

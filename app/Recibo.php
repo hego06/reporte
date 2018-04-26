@@ -11,22 +11,22 @@ class Recibo extends Model
     
     function getFsalidaAttribute($fSalida)
     {
-        return Carbon::parse($fSalida)->formatLocalized('%d-%b-%Y');
+        return strtoupper(Carbon::parse($fSalida)->formatLocalized('%d-%b-%Y'));
     }
 
     function getFechahoyAttribute($fechaHoy)
     {
-        return Carbon::parse($fechaHoy)->formatLocalized('%d de %B del %Y');
+        return strtoupper(Carbon::parse($fechaHoy)->formatLocalized('%d de %B del %Y'));
     }
 
     function getFechatcAttribute($fechaTipoCambio)
     {
-        return Carbon::parse($fechaTipoCambio)->formatLocalized('%d-%b-%Y');
+        return strtoupper(Carbon::parse($fechaTipoCambio)->formatLocalized('%d-%b-%Y'));
     }
 
     function getFechsaopAttribute($fechaOperacion)
     {
-        return Carbon::parse($fechaOperacion)->formatLocalized('%d-%b-%Y');
+        return strtoupper(Carbon::parse($fechaOperacion)->formatLocalized('%d-%b-%Y'));    
     }
 
 }
