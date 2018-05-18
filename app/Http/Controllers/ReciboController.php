@@ -23,6 +23,13 @@ class ReciboController extends Controller
 
         return view('recibos',compact('recibos'));
     }
+
+    public function verRecibos()
+    {
+        $recibos = Recibo::where('pdf','=','1')->get();
+
+        return view('recibos',compact('recibos'));
+    }
     
     /* 
         Genera un pdf por cada registro donde el campo PDF este vacio

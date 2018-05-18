@@ -19,4 +19,5 @@ Route::get('/', 'ReciboController@index')->name('products');
 Route::get('generar-recibos', 'ReciboController@pdf')->name('recibos.pdf');
 Route::get('descargar-recibos','ReciboController@descargar')->name('download.recibos');
 Route::get('imprimir-recibos','ReciboController@imprimir')->name('imprimir.recibos');
+Route::get('ver-recibos','ReciboController@verRecibos')->name('ver.recibos');
 
